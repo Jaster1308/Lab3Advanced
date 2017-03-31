@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 3 - Advanced - Part 2 </title>
+</head>
+<body>
+
+<H1>Lab 3, <span class="copyme">advanced</span>, part 2</H1>
+
+<div>
+    <b><i>The objective of this lab</i></b> <span class="copyme">is</span> to practice using <span class="copyme">javascript</span> <b class="large">selectors</b> to identify a specific element or a list of elements.</p>
+
+    <p>Write a <b class="large">script</b> to make the following changes to this page. Don't change the HTML!</p>
+
+    <ul>
+        <li>Count the number of &ltp&gt elements and display the number in the paragraph with id="p_count"</li>
+        <li>Increase the font size of all <b>bold</b> &ltb&gt elements with class="large". Don't change any bold elements without this class.</li>
+        <li><i>Use selectors</i> to specifically identify <i>all</i> italic text within unordered lists. Change this italic text to the color of your choice.</li>
+        <li>Copy the text from all span elements with class="copyme". Sort it in reverse order, and concatenate all the strings together.
+            Add a paragraph containing this information to the div tag with id="copyhere" </li>
+        <li>Add a mouseover and mouseout listener to the 5th list element.
+            Mousing over this element will cause an image of your choice to appear below the list, mouse out will remove it.  </li>
+
+    </ul>
+
+
+</div>
+
+<div>
+    <p><i>Count of paragraph elements will go here</i>:</p>
+    <p id="p_count"></p>
+</div>
+
+<div id="copyhere">
+
+</div>
+
+<p>Some <i>italic text</i> that is <i>not</i> inside an unordered list...</p>
+<ul>
+    <li>And some <i>italic</i> text inside a list</li>
+</ul>
+
+
+<p><b>Please email if you have any questions</b>. See the lab for the rest of <span class="copyme">your</span> lab questions.</p>
+
+<script>
+    //    Gets all p elements, their count, and adds that to existing paragraph
+
+    var pElements = document.getElementsByTagName("p");
+    var pCount = pElements.length;
+    document.getElementById("p_count").innerHTML = pCount + " p elements if you include the element missing its starting tag.";
+
+    //    Gets all bold tags and 'large' class elements, loops through them for
+    //    matches, and then increases font size
+
+    var allBolds = document.getElementsByTagName("b");
+    var largeClass = document.getElementsByClassName("large");
+    var lista = doubleLooping(allBolds, largeClass, 2);
+    for (var i = 0; i < lista.length; i++) {
+        lista[i].style.fontSize = "28px";
+    }
+
+    //    Gets all ul and italic tags, loops through them for parent/child pairs,
+    //    and then changes their font color
+
+    var allUlists = document.getElementsByTagName("ul");
+    var allItalics = document.getElementsByTagName("i");
+    var listb = doubleLooping(allItalics, allUlists, 1);
+    for (i = 0; i < listb.length; i++) {
+        listb[i].style.color = "red";
+    }
+
+    //    Gets all span tags and 'copyme' class elements, loops through them for
+    //    matches, and then returns list of their text
+
+    var allSpans = document.getElementsByTagName("span");
+    var copyClass = document.getElementsByClassName("copyme");
+    var listc = doubleLooping(copyClass, allSpans, 3);
+
+    //    Sorts list just in case, reverses the order, and then concatenates strings
+
+    listc.sort();
+    listc.reverse();
+    var combinedString = "";
+    for (i = 0; i < listc.length; i++) {
+        combinedString += listc[i] + " ";
+    }
+
+    //    Gets 'copyhere' element, creates new paragraph element, adds concatenated
+    //    string to element, and adds it to page
+
+    var copyhereDiv = document.getElementById("copyhere");
+    var newParagraph = document.createElement("p");
+    newParagraph.innerHTML = combinedString;
+    copyhereDiv.appendChild(newParagraph);
+
+    //    Gets all list item tags, gets the 6th element from that group, creates
+    //    image element, and adds event listeners to 6th element
+
+    var allListItems = document.getElementsByTagName("li");
+    var sixthItem = allListItems[5];
+    var img = document.createElement("img");
+    img.src = "howDoesThisEvenWork.jpg";
+    sixthItem.addEventListener("mouseover", showImage);
+    sixthItem.addEventListener("mouseout", hideImage);
+
+    //    Function for looping through 2 groups and performing another action
+    //    Option 1 = parent/child pair search
+    //    Option 2 = matching
+    //    Option 3 = matching and retrieving text
+
+    function doubleLooping(group1, group2, option) {
+        var foundList = [];
+        for (var x = 0; x < group1.length; x++) {
+            for (var y = 0; y < group2.length; y++) {
+                if (option == 1) {
+                    if (group2[y].contains(group1[x])) {
+                        foundList[foundList.length] = group1[x];
+                    }
+                }
+                else {
+                    if (group2[y] == group1[x]) {
+                        if (option == 2) {
+                            foundList[foundList.length] = group1[x];
+                        }
+                        else if (option == 3) {
+                            foundList[foundList.length] = group1[x].innerHTML;
+                        }
+                    }
+                }
+            }
+        }
+
+//        Returns list
+
+        return foundList;
+    }
+
+    //    Function to add image to 6th list item
+
+    function showImage() {
+        sixthItem.appendChild(img);
+    }
+    //    Function to remove image
+
+    function hideImage() {
+        img.parentNode.removeChild(img);
+    }
+</script>
+
+
+<!--Worked with mark fox and stephanie for help-->
+</body>
+</html>
